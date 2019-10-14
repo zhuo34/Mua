@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="mua:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/mua_jar</output-path>
+    <root id="archive" name="mua.jar">
+      <element id="module-output" name="mua" />
+    </root>
+  </artifact>
+</component>
