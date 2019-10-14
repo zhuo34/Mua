@@ -14,16 +14,17 @@ public class Interpreter {
 	private NameSpace globalNameSpace;
 	private MuaStack globalStack;
 
+	public static Scanner ioScanner = new Scanner(System.in);
+
 	public Interpreter() {
 		globalNameSpace = new NameSpace();
 		globalStack = new MuaStack(globalNameSpace);
 	}
 
 	public void parse() {
-		Scanner scanner = new Scanner(System.in);
 //		System.out.print("> ");
-		while (scanner.hasNextLine()) {
-			String str = scanner.nextLine();
+		while (ioScanner.hasNextLine()) {
+			String str = ioScanner.nextLine();
 			parseLine(str);
 //			System.out.print("> ");
 		};
