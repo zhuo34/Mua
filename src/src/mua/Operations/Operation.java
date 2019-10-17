@@ -1,11 +1,12 @@
 package src.mua.Operations;
 
-import src.mua.MuaData;
+import src.mua.MuaItem;
 import src.mua.NameSpace;
+import src.mua.Value.Value;
 
 import java.util.ArrayList;
 
-public interface Operation {
+public interface Operation extends MuaItem {
 	public int argNumber();
-	public MuaData execute(ArrayList<MuaData> args, NameSpace ns);
+	public Value execute(ArrayList<Value> args, NameSpace ns);
 }
