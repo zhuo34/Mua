@@ -5,11 +5,6 @@ import src.mua.Value.ValueFactory;
 
 public interface MuaItem {
 
-//	public enum Type {
-//		None, Op, Data
-//	}
-
-
 	public static MuaItem parseLiteral(String str) {
 		MuaItem ret;
 		if (OperationFactory.isOperation(str)) {
