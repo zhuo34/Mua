@@ -51,8 +51,7 @@ public class Interpreter {
 		}
 
 		// convert : to thing
-		line = line.replace(":", "thing \"");
-//		System.out.println(line);
+		line = line.replace(" :", " thing \"");
 		ArrayList<MuaItem> ret = new ArrayList<MuaItem>();
 		Scanner scanner = new Scanner(line);
 		while (scanner.hasNext()) {
