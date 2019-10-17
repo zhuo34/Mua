@@ -11,19 +11,20 @@ import java.util.Scanner;
 public class Interpreter {
 
 	private final static Charset ENCODING = StandardCharsets.UTF_8;
-	private NameSpace globalNameSpace;
-	private MuaStack globalStack;
+	private NameSpace globalNameSpace = new NameSpace();
+	private MuaStack globalStack = new MuaStack(globalNameSpace);
+
+	public static Scanner ioScanner = new Scanner(System.in);
 
 	public Interpreter() {
-		globalNameSpace = new NameSpace();
-		globalStack = new MuaStack(globalNameSpace);
+//		globalNameSpace = new NameSpace();
+//		globalStack = new MuaStack(globalNameSpace);
 	}
 
 	public void parse() {
-		Scanner scanner = new Scanner(System.in);
 //		System.out.print("> ");
-		while (scanner.hasNextLine()) {
-			String str = scanner.nextLine();
+		while (ioScanner.hasNextLine()) {
+			String str = ioScanner.nextLine();
 			parseLine(str);
 //			System.out.print("> ");
 		};

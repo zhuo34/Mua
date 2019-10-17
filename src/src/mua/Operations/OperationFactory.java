@@ -27,4 +27,8 @@ public class OperationFactory {
 	public static Operation getOperation(String str) {
 		return operationMap.get(str);
 	}
+
+	public static boolean isOperation(String str) {
+		return operationMap.containsKey(str);
+	}
 }

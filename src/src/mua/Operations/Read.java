@@ -1,10 +1,12 @@
 package src.mua.Operations;
 
-import src.mua.MuaData;
+import src.mua.Interpreter;
 import src.mua.NameSpace;
+import src.mua.Value.None;
+import src.mua.Value.Value;
+import src.mua.Value.Word;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Read implements Operation {
 	@Override
@@ -13,12 +15,12 @@ public class Read implements Operation {
 	}
 
 	@Override
-	public MuaData execute(ArrayList<MuaData> args, NameSpace ns) {
-		MuaData ret = new MuaData();
+	public Value execute(ArrayList<Value> args, NameSpace ns) {
+		Value ret = new None();
 		boolean flag = true;
-		Scanner scanner = new Scanner(System.in);
-		if (scanner.hasNext()) {
-			ret = new MuaData(scanner.next());
+//		Scanner scanner = new Scanner(System.in);
+		if (Interpreter.ioScanner.hasNext()) {
+			ret = new Word(Interpreter.ioScanner.next());
 		}
 		return ret;
 	}
