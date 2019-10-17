@@ -1,7 +1,8 @@
 package src.mua.Operations;
 
-import src.mua.MuaData;
 import src.mua.NameSpace;
+import src.mua.Value.Value;
+import src.mua.Value.ValueFactory;
 
 import java.util.ArrayList;
 
@@ -12,8 +13,8 @@ public class Gt implements Operation {
 	}
 
 	@Override
-	public MuaData execute(ArrayList<MuaData> args, NameSpace ns) {
-		MuaData ret = args.get(0).compare(args.get(1), '>');
+	public Value execute(ArrayList<Value> args, NameSpace ns) {
+		Value ret = ValueFactory.compare(args.get(0), args.get(1), '>');
 		return ret;
 	}
 }
