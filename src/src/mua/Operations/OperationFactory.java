@@ -23,6 +23,7 @@ public class OperationFactory {
 		put("or", new Or());
 		put("not", new Not());
 		put("readlist", new Readlist());
+		put("repeat", new Repeat());
 	}};
 
 	public static Operation getOperation(String str) {

@@ -57,16 +57,19 @@ public class Interpreter {
 			line = line.substring(0, commentIndex);
 		}
 
-		// convert : to thing
 		Scanner scanner = new Scanner(line);
 		while (scanner.hasNext()) {
 			String str = scanner.next();
 			ArrayList<MuaItem> items = MuaItemFactory.parseLiteral(str);
 			this.muaStatement.addAll(items);
 		};
-		if (!ValueFactory.isParsingList()) {
+		if (finishStatement()) {
 			this.processStatement();
 		}
+	}
+
+	private boolean finishStatement() {
+		return !ValueFactory.isParsingList();
 	}
 
 	private void processStatement() {

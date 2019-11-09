@@ -34,7 +34,18 @@ public class List implements Value {
 
 	@Override
 	public Value toWord() {
-		return new None();
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		if (this.list.isEmpty()) {
+			sb.append(" ");
+		} else {
+			sb.append(list.get(0).toWord().getWord());
+			for (int i = 1; i < list.size(); i++) {
+				sb.append(" ").append(list.get(i).toWord().getWord());
+			}
+		}
+		sb.append("]");
+		return new Word(sb.toString());
 	}
 
 	@Override
@@ -64,17 +75,7 @@ public class List implements Value {
 
 	@Override
 	public void print() {
-		System.out.print("[");
-		if (this.list.isEmpty()) {
-			System.out.print(" ");
-		} else {
-			list.get(0).print();
-			for (int i = 1; i < list.size(); i++) {
-				System.out.print(" ");
-				list.get(i).print();
-			}
-		}
-		System.out.print("]");
+		this.toWord().print();
 	}
 
 	public void add(Value v) {

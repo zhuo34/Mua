@@ -15,7 +15,6 @@ public class MuaItemFactory {
 		if (ValueFactory.isParsingList()) {
 			Value v = ValueFactory.parseLiteral(str);
 			if (!(v instanceof None)) {
-				System.out.println(v instanceof List);
 				ret.add(v);
 			}
 		} else {

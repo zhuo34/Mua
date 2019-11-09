@@ -2,6 +2,7 @@ package src.mua;
 
 import src.mua.Operations.Operation;
 import src.mua.Operations.OperationFactory;
+import src.mua.Value.List;
 import src.mua.Value.None;
 import src.mua.Value.Value;
 
@@ -30,13 +31,17 @@ public class MuaStack {
 				opStack.push((Operation)it);
 				opDataStack.push(dataStack.size());
 			} else if (it instanceof Value) {
+//				((Value) it).print();
+//				System.out.print('\t');
+//				System.out.println(it instanceof List);
 				dataStack.push((Value)it);
 				this.executeUntil();
 			}
 		}
 
 		this.executeUntil();
-
+//		ns.get("a").print();
+//		System.out.println(statement.size());
 		return ret;
 	}
 
@@ -48,9 +53,12 @@ public class MuaStack {
 			for (int i = 0; i < topOp.argNumber(); i++) {
 				argList.add(0, dataStack.pop());
 			}
+
 			Value res = topOp.execute(argList, ns);
 			if (!(res instanceof None)) {
 				dataStack.push(res);
+			} else {
+				// TODO: error
 			}
 		}
 	}
