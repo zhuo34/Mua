@@ -22,6 +22,7 @@ public class OperationFactory {
 		put("and", new And());
 		put("or", new Or());
 		put("not", new Not());
+		put("readlist", new Readlist());
 	}};
 
 	public static Operation getOperation(String str) {

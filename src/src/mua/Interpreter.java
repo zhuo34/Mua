@@ -1,11 +1,16 @@
 package src.mua;
 
+import src.mua.Value.None;
+import src.mua.Value.ValueFactory;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Interpreter {
@@ -15,6 +20,8 @@ public class Interpreter {
 	private MuaStack globalStack = new MuaStack(globalNameSpace);
 
 	public static Scanner ioScanner = new Scanner(System.in);
+
+	private ArrayList<MuaItem> muaStatement = new ArrayList<>();
 
 	public Interpreter() {
 //		globalNameSpace = new NameSpace();
@@ -51,17 +58,19 @@ public class Interpreter {
 		}
 
 		// convert : to thing
-		line = line.replace(" :", " thing \"");
-		ArrayList<MuaItem> ret = new ArrayList<MuaItem>();
 		Scanner scanner = new Scanner(line);
 		while (scanner.hasNext()) {
 			String str = scanner.next();
-			ret.add(MuaItem.parseLiteral(str));
+			ArrayList<MuaItem> items = MuaItemFactory.parseLiteral(str);
+			this.muaStatement.addAll(items);
 		};
-		processStatement(ret);
+		if (!ValueFactory.isParsingList()) {
+			this.processStatement();
+		}
 	}
 
-	private void processStatement(ArrayList<MuaItem> statement) {
-		globalStack.processStatement(statement);
+	private void processStatement() {
+		globalStack.processStatement(this.muaStatement);
+		this.muaStatement.clear();
 	}
 }

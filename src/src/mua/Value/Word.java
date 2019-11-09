@@ -1,5 +1,7 @@
 package src.mua.Value;
 
+import java.util.ArrayList;
+
 public class Word implements Value {
 
 	private String word = "";
@@ -16,7 +18,7 @@ public class Word implements Value {
 	@Override
 	public Value toNumber() {
 		Value ret = new None();
-		if (ValueFactory.isNumber(this.getWord())) {
+		if (ValueFactory.literalIsNumber(this.getWord())) {
 			ret = new Number(Double.parseDouble(this.getWord()));
 		}
 		return ret;
@@ -37,6 +39,11 @@ public class Word implements Value {
 	}
 
 	@Override
+	public Value toList() {
+		return new None();
+	}
+
+	@Override
 	public double getNumber() {
 		return 0;
 	}
@@ -49,6 +56,11 @@ public class Word implements Value {
 	@Override
 	public String getWord() {
 		return word;
+	}
+
+	@Override
+	public ArrayList<Value> getList() {
+		return null;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package src.mua.Value;
 
+import java.util.ArrayList;
+
 public class Number implements Value {
 
 	private double number = 0;
@@ -29,6 +31,11 @@ public class Number implements Value {
 	}
 
 	@Override
+	public Value toList() {
+		return new None();
+	}
+
+	@Override
 	public double getNumber() {
 		return this.number;
 	}
@@ -40,6 +47,11 @@ public class Number implements Value {
 
 	@Override
 	public String getWord() {
+		return null;
+	}
+
+	@Override
+	public ArrayList<Value> getList() {
 		return null;
 	}
 

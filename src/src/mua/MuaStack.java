@@ -23,6 +23,7 @@ public class MuaStack {
 	}
 
 	public Value processStatement(ArrayList<MuaItem> statement) {
+		this.clear();
 		Value ret = new None();
 		for (MuaItem it: statement) {
 			if (it instanceof Operation) {
@@ -52,5 +53,11 @@ public class MuaStack {
 				dataStack.push(res);
 			}
 		}
+	}
+
+	private void clear() {
+		this.opStack.clear();
+		this.opDataStack.clear();
+		this.dataStack.clear();
 	}
 }

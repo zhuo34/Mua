@@ -18,7 +18,6 @@ public class Read implements Operation {
 	public Value execute(ArrayList<Value> args, NameSpace ns) {
 		Value ret = new None();
 		boolean flag = true;
-//		Scanner scanner = new Scanner(System.in);
 		if (Interpreter.ioScanner.hasNext()) {
 			ret = new Word(Interpreter.ioScanner.next());
 		}

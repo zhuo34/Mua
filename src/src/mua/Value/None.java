@@ -1,5 +1,7 @@
 package src.mua.Value;
 
+import java.util.ArrayList;
+
 public class None implements Value {
 	@Override
 	public boolean canBeName() {
@@ -22,6 +24,11 @@ public class None implements Value {
 	}
 
 	@Override
+	public Value toList() {
+		return this;
+	}
+
+	@Override
 	public double getNumber() {
 		return 0;
 	}
@@ -33,6 +40,11 @@ public class None implements Value {
 
 	@Override
 	public String getWord() {
+		return null;
+	}
+
+	@Override
+	public ArrayList<Value> getList() {
 		return null;
 	}
 

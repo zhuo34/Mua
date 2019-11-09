@@ -1,28 +1,66 @@
 package src.mua.Value;
 
+import java.util.Stack;
+
 public class ValueFactory {
+
+	private static Stack<List> listStack = new Stack<>();
 
 	public static Value parseLiteral(String str) {
 		Value ret = new None();
-		if (ValueFactory.isNumber(str)) {
-			ret = new Number(Double.parseDouble(str));
-		} else if (ValueFactory.isWord(str)) {
-			ret = new Word(str.substring(1));
-		} else if (ValueFactory.isBool(str)) {
-			ret = new Bool(Boolean.parseBoolean(str));
+		if (listStack.empty()) {
+			if (ValueFactory.literalIsNumber(str)) {
+				ret = new Number(Double.parseDouble(str));
+			} else if (ValueFactory.literalIsWord(str)) {
+				ret = new Word(str.substring(1));
+			} else if (ValueFactory.literalIsBool(str)) {
+				ret = new Bool(Boolean.parseBoolean(str));
+			} else if (ValueFactory.literalIsListHead(str)) {
+				ret = ValueFactory.parseList(str);
+			}
+		} else {
+			ret = ValueFactory.parseList(str);
+		}
+
+		return ret;
+	}
+
+	public static boolean isParsingList() {
+		return !listStack.empty();
+	}
+
+	private static Value parseList(String str) {
+		Value ret = new None();
+		if (!literalIsListHead(str) && !literalIsListTail(str)) {
+			if (!str.isEmpty()) {
+				listStack.peek().add(new Word(str));
+			}
+		} else if (literalIsListHead(str)) {
+			List newList = new List();
+			listStack.push(newList);
+			ret = parseList(str.substring(1));
+		} else {
+			int cnt = 0;
+			while (literalIsListTail(str)) {
+				cnt++;
+				str = str.substring(0, str.length()-1);
+			}
+			if (!str.isEmpty()) {
+				listStack.peek().add(new Word(str));
+			}
+			for (int i = 0; i < cnt; i++) {
+				List lastList = listStack.pop();
+				if (listStack.empty()) {
+					ret = lastList;
+				} else {
+					listStack.peek().add(lastList);
+				}
+			}
 		}
 		return ret;
 	}
 
-	public static boolean isMuaData(String str) {
-		boolean ret = false;
-		if (ValueFactory.isWord(str) || ValueFactory.isNumber(str) || ValueFactory.isBool(str)) {
-			ret = true;
-		}
-		return ret;
-	}
-
-	public static boolean isWord(String str) {
+	public static boolean literalIsWord(String str) {
 		boolean ret = false;
 		if (!str.isEmpty() && str.charAt(0) == '"') {
 			ret = true;
@@ -30,7 +68,7 @@ public class ValueFactory {
 		return ret;
 	}
 
-	public static boolean isNumber(String str) {
+	public static boolean literalIsNumber(String str) {
 		boolean ret = false;
 		if (str.matches("-?[0-9]+(.[0-9]+)?")) {
 			ret = true;
@@ -38,9 +76,25 @@ public class ValueFactory {
 		return ret;
 	}
 
-	public static boolean isBool(String str) {
+	public static boolean literalIsBool(String str) {
 		boolean ret = false;
 		if (str.equals("true") || str.equals("false")) {
+			ret = true;
+		}
+		return ret;
+	}
+
+	public static boolean literalIsListHead(String str) {
+		boolean ret = false;
+		if (!str.isEmpty() && str.charAt(0) == '[') {
+			ret = true;
+		}
+		return ret;
+	}
+
+	public static boolean literalIsListTail(String str) {
+		boolean ret = false;
+		if (!str.isEmpty() && str.charAt(str.length() - 1) == ']') {
 			ret = true;
 		}
 		return ret;
