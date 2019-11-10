@@ -4,7 +4,6 @@ import src.mua.MuaItem;
 import src.mua.MuaItemFactory;
 import src.mua.MuaStack;
 import src.mua.NameSpace;
-import src.mua.Value.List;
 import src.mua.Value.Value;
 
 import java.util.ArrayList;
@@ -22,16 +21,11 @@ public class Repeat implements Operation {
 		ArrayList<Value> list = args.get(1).getList();
 		ArrayList<MuaItem> muaStatement = new ArrayList<>();
 
-		StringBuilder sb = new StringBuilder();
 		for (Value v : list) {
-			sb.append(v.toWord().getWord()).append(' ');
-		}
-		Scanner scanner = new Scanner(sb.toString());
-		while (scanner.hasNext()) {
-			String str = scanner.next();
+			String str = v.toWord().getWord();
 			ArrayList<MuaItem> items = MuaItemFactory.parseLiteral(str);
 			muaStatement.addAll(items);
-		};
+		}
 
 		MuaStack muaStack = new MuaStack(ns);
 		while (number-- > 0) {

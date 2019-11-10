@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Number implements Value {
 
-	private double number = 0;
+	private double mNumber = 0;
 
 	public Number(double number) {
-		this.number = number;
+		this.mNumber = number;
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class Number implements Value {
 
 	@Override
 	public Value toBool() {
-		return new Bool(this.number != 0);
+		return new Bool(this.mNumber != 0);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class Number implements Value {
 
 	@Override
 	public double getNumber() {
-		return this.number;
+		return this.mNumber;
 	}
 
 	@Override

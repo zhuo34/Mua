@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Bool implements Value {
 
-	private boolean bool = false;
+	private boolean mBool = false;
 
 	public Bool(boolean bool) {
-		this.bool = bool;
+		this.mBool = bool;
 	}
 
 	@Override
@@ -17,7 +17,7 @@ public class Bool implements Value {
 
 	@Override
 	public Value toNumber() {
-		return new Number(this.bool ? 1.0 : 0.0);
+		return new Number(this.mBool ? 1.0 : 0.0);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class Bool implements Value {
 
 	@Override
 	public boolean getBool() {
-		return this.bool;
+		return this.mBool;
 	}
 
 	@Override

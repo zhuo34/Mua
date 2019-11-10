@@ -2,6 +2,8 @@ package src.mua;
 
 import src.mua.Operations.Operation;
 import src.mua.Operations.OperationFactory;
+import src.mua.Operations.Return;
+import src.mua.Operations.Stop;
 import src.mua.Value.List;
 import src.mua.Value.None;
 import src.mua.Value.Value;
@@ -12,40 +14,46 @@ import java.util.Stack;
 public class MuaStack {
 
 	private NameSpace ns;
-	private Stack<Operation> opStack;
-	private Stack<Integer> opDataStack;
-	private Stack<Value> dataStack;
+	private Stack<Operation> opStack = new Stack<>();
+	private Stack<Integer> opDataStack = new Stack<>();
+	private Stack<Value> dataStack = new Stack<>();
 
 	public MuaStack(NameSpace ns) {
 		this.ns = ns;
-		opStack = new Stack<>();
-		opDataStack = new Stack<>();
-		dataStack = new Stack<>();
+	}
+
+	public Value getStatementValue() {
+		Value ret = new None();
+		if (!dataStack.empty()) {
+			ret = dataStack.peek();
+		}
+		return ret;
 	}
 
 	public Value processStatement(ArrayList<MuaItem> statement) {
 		this.clear();
-		Value ret = new None();
 		for (MuaItem it: statement) {
 			if (it instanceof Operation) {
 				opStack.push((Operation)it);
 				opDataStack.push(dataStack.size());
 			} else if (it instanceof Value) {
-//				((Value) it).print();
-//				System.out.print('\t');
-//				System.out.println(it instanceof List);
 				dataStack.push((Value)it);
-				this.executeUntil();
+			} else {
+				// TODO: error
+				continue;
+			}
+			if (this.executeUntil() > 0) {
+				return this.getStatementValue();
 			}
 		}
-
-		this.executeUntil();
-//		ns.get("a").print();
-//		System.out.println(statement.size());
-		return ret;
+		if (this.executeUntil() > 0) {
+			return this.getStatementValue();
+		}
+		return this.getStatementValue();
 	}
 
-	private void executeUntil() {
+	private int executeUntil() {
+		int ret = 0;
 		while (!opStack.isEmpty() && opStack.peek().argNumber() <= dataStack.size() - opDataStack.peek()) {
 			Operation topOp = opStack.pop();
 			opDataStack.pop();
@@ -55,12 +63,23 @@ public class MuaStack {
 			}
 
 			Value res = topOp.execute(argList, ns);
-			if (!(res instanceof None)) {
+			if (topOp instanceof Stop) {
 				dataStack.push(res);
+				ret = 1;
+				break;
+			} else if (topOp instanceof Return) {
+				dataStack.push(res);
+				ret = 2;
+				break;
 			} else {
-				// TODO: error
+				if (!(res instanceof None)) {
+					dataStack.push(res);
+				} else {
+					// TODO: error
+				}
 			}
 		}
+		return ret;
 	}
 
 	private void clear() {

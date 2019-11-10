@@ -1,10 +1,14 @@
 package src.mua.Operations;
 
+import src.mua.Value.List;
+import src.mua.Value.Value;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OperationFactory {
 
-	private static HashMap<String, Operation> operationMap = new HashMap<String, Operation>() {{
+	private static HashMap<String, Operation> mOperationMap = new HashMap<String, Operation>() {{
 		put("make", new Make());
 		put("print", new Print());
 		put("thing", new Thing());
@@ -24,13 +28,35 @@ public class OperationFactory {
 		put("not", new Not());
 		put("readlist", new Readlist());
 		put("repeat", new Repeat());
+		put("return", new Return());
+		put("stop", new Stop());
 	}};
 
 	public static Operation getOperation(String str) {
-		return operationMap.get(str);
+		return mOperationMap.get(str);
 	}
 
 	public static boolean isOperation(String str) {
-		return operationMap.containsKey(str);
+		return mOperationMap.containsKey(str);
+	}
+
+	public static void addFunction(String name, List argList, List funcBody) {
+		ArrayList<String> argListStr = new ArrayList<>();
+		ArrayList<String> funcBodyStr = new ArrayList<>();
+		for (Value v :argList.getList()) {
+			argListStr.add(v.getWord());
+		}
+		for (Value v : funcBody.getList()) {
+			funcBodyStr.add(v.toWord().getWord());
+		}
+		OperationFactory.addFunction(name, argListStr, funcBodyStr);
+	}
+
+	public static void addFunction(String name, ArrayList<String> argList, ArrayList<String> funcBody) {
+		mOperationMap.put(name, new Function(name, argList, funcBody));
+	}
+
+	public static void eraseFunction(String name) {
+		mOperationMap.remove(name);
 	}
 }

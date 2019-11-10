@@ -29,12 +29,20 @@ public class ValueFactory {
 		return !listStack.empty();
 	}
 
+	private static void addWordToList(String str) {
+		if (!str.isEmpty() && !listStack.empty()) {
+			if (str.contains("[") || str.contains("]")) {
+				// TODO: error
+			} else {
+				listStack.peek().add(new Word(str));
+			}
+		}
+	}
+
 	private static Value parseList(String str) {
 		Value ret = new None();
 		if (!literalIsListHead(str) && !literalIsListTail(str)) {
-			if (!str.isEmpty()) {
-				listStack.peek().add(new Word(str));
-			}
+			ValueFactory.addWordToList(str);
 		} else if (literalIsListHead(str)) {
 			List newList = new List();
 			listStack.push(newList);
@@ -45,9 +53,10 @@ public class ValueFactory {
 				cnt++;
 				str = str.substring(0, str.length()-1);
 			}
-			if (!str.isEmpty()) {
-				listStack.peek().add(new Word(str));
+			if (cnt > listStack.size()) {
+				// TODO: error
 			}
+			ValueFactory.addWordToList(str);
 			for (int i = 0; i < cnt; i++) {
 				List lastList = listStack.pop();
 				if (listStack.empty()) {

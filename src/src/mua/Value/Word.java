@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class Word implements Value {
 
-	private String word = "";
+	private String mWord = "";
 
 	public Word(String word) {
-		this.word = word;
+		this.mWord = word;
 	}
 
 	@Override
 	public boolean canBeName() {
-		return this.word.matches("^[a-zA-z][a-z_A-z0-9]*$");
+		return this.mWord.matches("^[a-zA-z][a-z_A-z0-9]*$");
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class Word implements Value {
 
 	@Override
 	public String getWord() {
-		return word;
+		return mWord;
 	}
 
 	@Override

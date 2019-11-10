@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class List implements Value {
 
-	ArrayList<Value> list = new ArrayList<>();
+	private ArrayList<Value> mList = new ArrayList<>();
 
 	public List() {
 	}
@@ -14,7 +14,7 @@ public class List implements Value {
 	}
 
 	public List(ArrayList<Value> list) {
-		this.list = list;
+		this.mList = list;
 	}
 
 	@Override
@@ -36,12 +36,12 @@ public class List implements Value {
 	public Value toWord() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
-		if (this.list.isEmpty()) {
+		if (this.mList.isEmpty()) {
 			sb.append(" ");
 		} else {
-			sb.append(list.get(0).toWord().getWord());
-			for (int i = 1; i < list.size(); i++) {
-				sb.append(" ").append(list.get(i).toWord().getWord());
+			sb.append(mList.get(0).toWord().getWord());
+			for (int i = 1; i < mList.size(); i++) {
+				sb.append(" ").append(mList.get(i).toWord().getWord());
 			}
 		}
 		sb.append("]");
@@ -70,7 +70,7 @@ public class List implements Value {
 
 	@Override
 	public ArrayList<Value> getList() {
-		return this.list;
+		return this.mList;
 	}
 
 	@Override
@@ -79,6 +79,6 @@ public class List implements Value {
 	}
 
 	public void add(Value v) {
-		this.list.add(v);
+		this.mList.add(v);
 	}
 }
