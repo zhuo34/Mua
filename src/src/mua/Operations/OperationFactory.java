@@ -28,8 +28,15 @@ public class OperationFactory {
 		put("not", new Not());
 		put("readlist", new Readlist());
 		put("repeat", new Repeat());
-		put("return", new Return());
+		put("output", new Output());
 		put("stop", new Stop());
+		put("export", new Export());
+		put("isword", new Isword());
+		put("isnumber", new Isnumber());
+		put("isbool", new Isbool());
+		put("islist", new Islist());
+		put("isempty", new Isempty());
+		put("if", new If());
 	}};
 
 	public static Operation getOperation(String str) {

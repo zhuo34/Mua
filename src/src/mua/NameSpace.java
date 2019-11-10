@@ -3,6 +3,7 @@ package src.mua;
 import src.mua.Value.Value;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class NameSpace {
 
@@ -30,4 +31,9 @@ public class NameSpace {
 		mNameMap.clear();
 	}
 
+	public void exportTo(NameSpace ns) {
+		for (HashMap.Entry<String, Value> entry: mNameMap.entrySet()){
+			ns.make(entry.getKey(), entry.getValue());
+		}
+	}
 }

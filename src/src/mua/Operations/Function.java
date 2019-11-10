@@ -37,7 +37,8 @@ public class Function implements Operation {
 			muaStatement.addAll(items);
 		}
 		MuaStack muaStack = new MuaStack(ns);
-		return mLocalStack.processStatement(muaStatement);
+		mLocalStack.processStatement(muaStatement);
+		return mLocalStack.getFuncOutput();
 	}
 
 	private void bind(ArrayList<Value> args) {

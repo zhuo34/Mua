@@ -1,10 +1,8 @@
 package src.mua;
 
 import src.mua.Operations.Operation;
-import src.mua.Operations.OperationFactory;
-import src.mua.Operations.Return;
+import src.mua.Operations.Output;
 import src.mua.Operations.Stop;
-import src.mua.Value.List;
 import src.mua.Value.None;
 import src.mua.Value.Value;
 
@@ -17,6 +15,7 @@ public class MuaStack {
 	private Stack<Operation> opStack = new Stack<>();
 	private Stack<Integer> opDataStack = new Stack<>();
 	private Stack<Value> dataStack = new Stack<>();
+	private Value output = new None();
 
 	public MuaStack(NameSpace ns) {
 		this.ns = ns;
@@ -28,6 +27,10 @@ public class MuaStack {
 			ret = dataStack.peek();
 		}
 		return ret;
+	}
+
+	public Value getFuncOutput() {
+		return output;
 	}
 
 	public Value processStatement(ArrayList<MuaItem> statement) {
@@ -67,9 +70,8 @@ public class MuaStack {
 				dataStack.push(res);
 				ret = 1;
 				break;
-			} else if (topOp instanceof Return) {
-				dataStack.push(res);
-				ret = 2;
+			} else if (topOp instanceof Output) {
+				output = res;
 				break;
 			} else {
 				if (!(res instanceof None)) {
@@ -86,5 +88,8 @@ public class MuaStack {
 		this.opStack.clear();
 		this.opDataStack.clear();
 		this.dataStack.clear();
+		if (!(output instanceof None)) {
+			output = new None();
+		}
 	}
 }
