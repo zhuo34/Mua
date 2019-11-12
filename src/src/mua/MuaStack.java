@@ -34,7 +34,7 @@ public class MuaStack {
 	}
 
 	public Value processStatement(ArrayList<MuaItem> statement) {
-		this.clear();
+//		this.clear();
 		for (MuaItem it: statement) {
 			if (it instanceof Operation) {
 				opStack.push((Operation)it);
