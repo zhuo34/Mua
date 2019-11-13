@@ -45,12 +45,12 @@ public class Word implements Value {
 
 	@Override
 	public double getNumber() {
-		return 0;
+		return this.toNumber().getNumber();
 	}
 
 	@Override
 	public boolean getBool() {
-		return false;
+		return this.toBool().getBool();
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class Word implements Value {
 
 	@Override
 	public ArrayList<Value> getList() {
-		return null;
+		return this.toList().getList();
 	}
 
 	@Override

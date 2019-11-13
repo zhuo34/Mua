@@ -21,6 +21,10 @@ public class MuaStack {
 		this.ns = ns;
 	}
 
+	public NameSpace getNameSpace() {
+		return this.ns;
+	}
+
 	public Value getStatementValue() {
 		Value ret = new None();
 		if (!dataStack.empty()) {
@@ -65,7 +69,7 @@ public class MuaStack {
 				argList.add(0, dataStack.pop());
 			}
 
-			Value res = topOp.execute(argList, ns);
+			Value res = topOp.execute(argList, this);
 			if (topOp instanceof Stop) {
 				dataStack.push(res);
 				ret = 1;

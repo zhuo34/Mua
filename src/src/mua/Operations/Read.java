@@ -1,7 +1,7 @@
 package src.mua.Operations;
 
 import src.mua.Interpreter;
-import src.mua.NameSpace;
+import src.mua.MuaStack;
 import src.mua.Value.None;
 import src.mua.Value.Value;
 import src.mua.Value.Word;
@@ -15,7 +15,7 @@ public class Read implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, NameSpace ns) {
+	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		Value ret = new None();
 		boolean flag = true;
 		if (Interpreter.ioScanner.hasNext()) {

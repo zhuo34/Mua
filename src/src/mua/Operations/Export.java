@@ -2,6 +2,7 @@ package src.mua.Operations;
 
 import src.mua.Interpreter;
 import src.mua.Main;
+import src.mua.MuaStack;
 import src.mua.NameSpace;
 import src.mua.Value.None;
 import src.mua.Value.Value;
@@ -15,8 +16,8 @@ public class Export implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, NameSpace ns) {
-		ns.exportTo(Main.interpreter.globalNameSpace);
+	public Value execute(ArrayList<Value> args, MuaStack caller) {
+		caller.getNameSpace().exportTo(Interpreter.globalNameSpace);
 		return new None();
 	}
 }

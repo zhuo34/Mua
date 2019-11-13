@@ -1,6 +1,6 @@
 package src.mua.Operations;
 
-import src.mua.NameSpace;
+import src.mua.MuaStack;
 import src.mua.Value.Bool;
 import src.mua.Value.Value;
 
@@ -13,8 +13,8 @@ public class Isname implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, NameSpace ns) {
-		Value ret = new Bool(ns.has(args.get(0).getWord()));
+	public Value execute(ArrayList<Value> args, MuaStack caller) {
+		Value ret = new Bool(caller.getNameSpace().has(args.get(0).getWord()));
 		return ret;
 	}
 }

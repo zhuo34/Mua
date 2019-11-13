@@ -1,5 +1,6 @@
 package src.mua.Operations;
 
+import src.mua.MuaStack;
 import src.mua.NameSpace;
 import src.mua.Value.List;
 import src.mua.Value.None;
@@ -14,7 +15,7 @@ public class Make implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, NameSpace ns) {
+	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		Value ret = new None();
 		Value name = args.get(0);
 		Value v = args.get(1);
@@ -27,7 +28,7 @@ public class Make implements Operation {
 					OperationFactory.addFunction(name.getWord(), (List)argList, (List)funcBody);
 				}
 			}
-			ns.make(args.get(0).getWord(), args.get(1));
+			caller.getNameSpace().make(args.get(0).getWord(), args.get(1));
 		}
 		return ret;
 	}

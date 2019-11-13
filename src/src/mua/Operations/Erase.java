@@ -1,5 +1,6 @@
 package src.mua.Operations;
 
+import src.mua.MuaStack;
 import src.mua.NameSpace;
 import src.mua.Value.None;
 import src.mua.Value.Value;
@@ -13,9 +14,9 @@ public class Erase implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, NameSpace ns) {
+	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		Value ret = new None();
-		ns.erase(args.get(0).getWord());
+		caller.getNameSpace().erase(args.get(0).getWord());
 		return ret;
 	}
 }

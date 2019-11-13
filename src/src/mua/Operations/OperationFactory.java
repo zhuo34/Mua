@@ -49,17 +49,13 @@ public class OperationFactory {
 
 	public static void addFunction(String name, List argList, List funcBody) {
 		ArrayList<String> argListStr = new ArrayList<>();
-		ArrayList<String> funcBodyStr = new ArrayList<>();
 		for (Value v :argList.getList()) {
 			argListStr.add(v.getWord());
 		}
-		for (Value v : funcBody.getList()) {
-			funcBodyStr.add(v.toWord().getWord());
-		}
-		OperationFactory.addFunction(name, argListStr, funcBodyStr);
+		OperationFactory.addFunction(name, argListStr, funcBody.getWord());
 	}
 
-	public static void addFunction(String name, ArrayList<String> argList, ArrayList<String> funcBody) {
+	public static void addFunction(String name, ArrayList<String> argList, String funcBody) {
 		mOperationMap.put(name, new Function(name, argList, funcBody));
 	}
 

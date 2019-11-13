@@ -1,6 +1,6 @@
 package src.mua.Operations;
 
-import src.mua.NameSpace;
+import src.mua.MuaStack;
 import src.mua.Value.Bool;
 import src.mua.Value.List;
 import src.mua.Value.Value;
@@ -15,7 +15,7 @@ public class Isempty implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, NameSpace ns) {
+	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		Value v = args.get(0);
 		boolean res = false;
 		if (v instanceof Word) {

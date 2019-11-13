@@ -1,11 +1,9 @@
 package src.mua.Operations;
 
-import src.mua.MuaItem;
-import src.mua.MuaItemFactory;
-import src.mua.MuaStack;
-import src.mua.NameSpace;
+import src.mua.*;
 import src.mua.Value.None;
 import src.mua.Value.Value;
+import src.mua.Value.List;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,20 +15,13 @@ public class Repeat implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, NameSpace ns) {
+	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		int number = (int)args.get(0).getNumber();
-		ArrayList<Value> list = args.get(1).getList();
-		ArrayList<MuaItem> muaStatement = new ArrayList<>();
+		Value list = args.get(1);
+		ArrayList<MuaItem> muaStatement = Interpreter.parseLine(list.getWord());
 
-		for (Value v : list) {
-			String str = v.toWord().getWord();
-			ArrayList<MuaItem> items = MuaItemFactory.parseLiteral(str);
-			muaStatement.addAll(items);
-		}
-
-		MuaStack muaStack = new MuaStack(ns);
 		while (number-- > 0) {
-			muaStack.processStatement(muaStatement);
+			caller.processStatement(muaStatement);
 		}
 
 		return new None();

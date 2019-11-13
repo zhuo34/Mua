@@ -37,7 +37,7 @@ public class Bool implements Value {
 
 	@Override
 	public double getNumber() {
-		return 0;
+		return this.toNumber().getNumber();
 	}
 
 	@Override
@@ -47,12 +47,12 @@ public class Bool implements Value {
 
 	@Override
 	public String getWord() {
-		return null;
+		return this.toWord().getWord();
 	}
 
 	@Override
 	public ArrayList<Value> getList() {
-		return null;
+		return this.toList().getList();
 	}
 
 	@Override

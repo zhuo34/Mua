@@ -55,17 +55,18 @@ public class List implements Value {
 
 	@Override
 	public double getNumber() {
-		return 0;
+		return this.toNumber().getNumber();
 	}
 
 	@Override
 	public boolean getBool() {
-		return false;
+		return this.toBool().getBool();
 	}
 
 	@Override
 	public String getWord() {
-		return null;
+		String str = this.toWord().getWord();
+		return str.substring(1, str.length() - 1);
 	}
 
 	@Override

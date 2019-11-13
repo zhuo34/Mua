@@ -42,17 +42,17 @@ public class Number implements Value {
 
 	@Override
 	public boolean getBool() {
-		return false;
+		return this.toBool().getBool();
 	}
 
 	@Override
 	public String getWord() {
-		return null;
+		return this.toWord().getWord();
 	}
 
 	@Override
 	public ArrayList<Value> getList() {
-		return null;
+		return this.toList().getList();
 	}
 
 	@Override

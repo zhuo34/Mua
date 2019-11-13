@@ -1,6 +1,6 @@
 package src.mua.Operations;
 
-import src.mua.NameSpace;
+import src.mua.MuaStack;
 import src.mua.Value.Value;
 import src.mua.Value.ValueFactory;
 
@@ -13,7 +13,7 @@ public class Or implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, NameSpace ns) {
+	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		Value ret = ValueFactory.logicOperation(args.get(0), args.get(1), '|');
 		return ret;
 	}

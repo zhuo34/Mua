@@ -16,8 +16,8 @@ import java.util.Scanner;
 public class Interpreter {
 
 	private final static Charset ENCODING = StandardCharsets.UTF_8;
-	public NameSpace globalNameSpace = new NameSpace();
-	public MuaStack globalStack = new MuaStack(globalNameSpace);
+	public static NameSpace globalNameSpace = new NameSpace();
+	public static MuaStack globalStack = new MuaStack(globalNameSpace);
 
 	public static Scanner ioScanner = new Scanner(System.in);
 
@@ -29,7 +29,10 @@ public class Interpreter {
 //		System.out.print("> ");
 		while (ioScanner.hasNextLine()) {
 			String str = ioScanner.nextLine();
-			parseLine(str);
+			this.muaStatement.addAll(parseLine(str));
+			if (finishStatement()) {
+				this.processStatement();
+			}
 //			System.out.print("> ");
 		};
 	}
@@ -39,7 +42,10 @@ public class Interpreter {
 		try (Scanner scanner =  new Scanner(filePath, ENCODING.name())) {
 			while (scanner.hasNextLine()) {
 				String str = scanner.nextLine();
-				parseLine(str);
+				this.muaStatement.addAll(parseLine(str));
+				if (finishStatement()) {
+					this.processStatement();
+				}
 			};
 		} catch (IOException e) {
 			System.out.println("Open '" + filename + "' failed.");
@@ -47,7 +53,7 @@ public class Interpreter {
 		parse();
 	}
 
-	private void parseLine(String line) {
+	public static ArrayList<MuaItem> parseLine(String line) {
 		// remove comments
 		int commentIndex = line.indexOf("//");
 		if (commentIndex != -1) {
@@ -55,14 +61,13 @@ public class Interpreter {
 		}
 
 		Scanner scanner = new Scanner(line);
+		ArrayList<MuaItem> muaStatement = new ArrayList<>();
 		while (scanner.hasNext()) {
 			String str = scanner.next();
 			ArrayList<MuaItem> items = MuaItemFactory.parseLiteral(str);
-			this.muaStatement.addAll(items);
+			muaStatement.addAll(items);
 		};
-		if (finishStatement()) {
-			this.processStatement();
-		}
+		return muaStatement;
 	}
 
 	private boolean finishStatement() {
