@@ -24,7 +24,8 @@ public class If implements Operation {
 			list = list2;
 		}
 		String body = list.getWord();
-		Interpreter.parseLine(body, caller);
+		MuaStack muaStack = new MuaStack(caller.getNameSpace());
+		Interpreter.parseLine(body, muaStack);
 
 		return new None();
 	}

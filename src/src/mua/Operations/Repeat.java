@@ -19,8 +19,9 @@ public class Repeat implements Operation {
 		int number = (int)args.get(0).getNumber();
 		Value list = args.get(1);
 
+		MuaStack muaStack = new MuaStack(caller.getNameSpace());
 		while (number-- > 0) {
-			Interpreter.parseLine(list.getWord(), caller);
+			Interpreter.parseLine(list.getWord(), muaStack);
 		}
 
 		return new None();
