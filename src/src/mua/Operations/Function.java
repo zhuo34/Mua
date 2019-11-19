@@ -28,10 +28,7 @@ public class Function implements Operation {
 	@Override
 	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		this.bind(args);
-		ArrayList<MuaItem> muaStatement = Interpreter.parseLine(mFuncBody);
-
-		MuaStack muaStack = new MuaStack(caller.getNameSpace());
-		mLocalStack.processStatement(muaStatement);
+		Interpreter.parseLine(mFuncBody, mLocalStack);
 		return mLocalStack.getFuncOutput();
 	}
 

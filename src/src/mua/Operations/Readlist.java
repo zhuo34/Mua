@@ -20,8 +20,8 @@ public class Readlist implements Operation {
 	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		List ret = new List();
 		boolean flag = true;
-		if (Interpreter.ioScanner.hasNextLine()) {
-			String line = Interpreter.ioScanner.nextLine();
+		if (caller.scanner.hasNextLine()) {
+			String line = caller.scanner.nextLine();
 			Scanner scanner = new Scanner(line);
 			while (scanner.hasNext()) {
 				String str = scanner.next();

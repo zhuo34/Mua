@@ -18,8 +18,8 @@ public class Read implements Operation {
 	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		Value ret = new None();
 		boolean flag = true;
-		if (Interpreter.ioScanner.hasNext()) {
-			ret = new Word(Interpreter.ioScanner.next());
+		if (caller.scanner.hasNext()) {
+			ret = new Word(caller.scanner.next());
 		}
 		return ret;
 	}

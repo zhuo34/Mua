@@ -18,10 +18,9 @@ public class Repeat implements Operation {
 	public Value execute(ArrayList<Value> args, MuaStack caller) {
 		int number = (int)args.get(0).getNumber();
 		Value list = args.get(1);
-		ArrayList<MuaItem> muaStatement = Interpreter.parseLine(list.getWord());
 
 		while (number-- > 0) {
-			caller.processStatement(muaStatement);
+			Interpreter.parseLine(list.getWord(), caller);
 		}
 
 		return new None();

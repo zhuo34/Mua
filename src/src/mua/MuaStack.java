@@ -7,6 +7,7 @@ import src.mua.Value.None;
 import src.mua.Value.Value;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class MuaStack {
@@ -16,6 +17,7 @@ public class MuaStack {
 	private Stack<Integer> opDataStack = new Stack<>();
 	private Stack<Value> dataStack = new Stack<>();
 	private Value output = new None();
+	public Scanner scanner;
 
 	public MuaStack(NameSpace ns) {
 		this.ns = ns;

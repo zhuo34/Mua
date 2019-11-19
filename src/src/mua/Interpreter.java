@@ -21,18 +21,13 @@ public class Interpreter {
 
 	public static Scanner ioScanner = new Scanner(System.in);
 
-	private ArrayList<MuaItem> muaStatement = new ArrayList<>();
-
 	public Interpreter() {}
 
 	public void parse() {
 //		System.out.print("> ");
 		while (ioScanner.hasNextLine()) {
-			String str = ioScanner.nextLine();
-			this.muaStatement.addAll(parseLine(str));
-			if (finishStatement()) {
-				this.processStatement();
-			}
+			String line = ioScanner.nextLine();
+			parseLine(line);
 //			System.out.print("> ");
 		};
 	}
@@ -41,11 +36,8 @@ public class Interpreter {
 		Path filePath = Paths.get(filename);
 		try (Scanner scanner =  new Scanner(filePath, ENCODING.name())) {
 			while (scanner.hasNextLine()) {
-				String str = scanner.nextLine();
-				this.muaStatement.addAll(parseLine(str));
-				if (finishStatement()) {
-					this.processStatement();
-				}
+				String line = scanner.nextLine();
+				parseLine(line);
 			};
 		} catch (IOException e) {
 			System.out.println("Open '" + filename + "' failed.");
@@ -53,29 +45,28 @@ public class Interpreter {
 		parse();
 	}
 
-	public static ArrayList<MuaItem> parseLine(String line) {
+	private void parseLine(String line) {
+		parseLine(line, globalStack);
+	}
+
+	public static void parseLine(String line, MuaStack stack) {
 		// remove comments
 		int commentIndex = line.indexOf("//");
 		if (commentIndex != -1) {
 			line = line.substring(0, commentIndex);
 		}
-
-		Scanner scanner = new Scanner(line);
-		ArrayList<MuaItem> muaStatement = new ArrayList<>();
-		while (scanner.hasNext()) {
-			String str = scanner.next();
+		stack.scanner = new Scanner(line);
+		while (stack.scanner.hasNext()) {
+			String str = stack.scanner.next();
 			ArrayList<MuaItem> items = MuaItemFactory.parseLiteral(str);
-			muaStatement.addAll(items);
+			if (finishStatement()) {
+				stack.processStatement(items);
+			}
 		};
-		return muaStatement;
 	}
 
-	private boolean finishStatement() {
+	private static boolean finishStatement() {
 		return !ValueFactory.isParsingList();
 	}
 
-	private void processStatement() {
-		globalStack.processStatement(this.muaStatement);
-		this.muaStatement.clear();
-	}
 }

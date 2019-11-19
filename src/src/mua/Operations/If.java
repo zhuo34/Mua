@@ -24,9 +24,7 @@ public class If implements Operation {
 			list = list2;
 		}
 		String body = list.getWord();
-		ArrayList<MuaItem> muaStatement = Interpreter.parseLine(body);
-		caller.processStatement(muaStatement);
-//		System.out.println("end if");
+		Interpreter.parseLine(body, caller);
 
 		return new None();
 	}
