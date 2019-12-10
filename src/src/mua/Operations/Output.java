@@ -1,7 +1,7 @@
 package src.mua.Operations;
 
 import src.mua.MuaStack;
-import src.mua.Value.Value;
+import src.mua.MuaValue.MuaValue;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class Output implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, MuaStack caller) {
+	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
 		return args.get(0);
 	}
 }

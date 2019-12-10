@@ -1,12 +1,12 @@
-package src.mua.Value;
+package src.mua.MuaValue;
 
 import java.util.ArrayList;
 
-public class Number implements Value {
+public class MuaNumber implements MuaValue {
 
 	private double mNumber = 0;
 
-	public Number(double number) {
+	public MuaNumber(double number) {
 		this.mNumber = number;
 	}
 
@@ -16,23 +16,23 @@ public class Number implements Value {
 	}
 
 	@Override
-	public Value toNumber() {
+	public MuaValue toNumber() {
 		return this;
 	}
 
 	@Override
-	public Value toBool() {
-		return new Bool(this.mNumber != 0);
+	public MuaValue toBool() {
+		return new MuaBool(this.mNumber != 0);
 	}
 
 	@Override
-	public Value toWord() {
-		return new Word(String.valueOf(this.getNumber()));
+	public MuaValue toWord() {
+		return new MuaWord(String.valueOf(this.getNumber()));
 	}
 
 	@Override
-	public Value toList() {
-		return new None();
+	public MuaValue toList() {
+		return new MuaNone();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class Number implements Value {
 	}
 
 	@Override
-	public ArrayList<Value> getList() {
+	public ArrayList<MuaValue> getList() {
 		return this.toList().getList();
 	}
 

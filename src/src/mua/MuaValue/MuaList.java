@@ -1,19 +1,19 @@
-package src.mua.Value;
+package src.mua.MuaValue;
 
 import java.util.ArrayList;
 
-public class List implements Value {
+public class MuaList implements MuaValue {
 
-	private ArrayList<Value> mList = new ArrayList<>();
+	private ArrayList<MuaValue> mList = new ArrayList<>();
 
-	public List() {
+	public MuaList() {
 	}
 
-	public List(Value v) {
+	public MuaList(MuaValue v) {
 		this.add(v);
 	}
 
-	public List(ArrayList<Value> list) {
+	public MuaList(ArrayList<MuaValue> list) {
 		this.mList = list;
 	}
 
@@ -23,17 +23,17 @@ public class List implements Value {
 	}
 
 	@Override
-	public Value toNumber() {
-		return new None();
+	public MuaValue toNumber() {
+		return new MuaNone();
 	}
 
 	@Override
-	public Value toBool() {
-		return new None();
+	public MuaValue toBool() {
+		return new MuaNone();
 	}
 
 	@Override
-	public Value toWord() {
+	public MuaValue toWord() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		if (this.mList.isEmpty()) {
@@ -45,11 +45,11 @@ public class List implements Value {
 			}
 		}
 		sb.append("]");
-		return new Word(sb.toString());
+		return new MuaWord(sb.toString());
 	}
 
 	@Override
-	public Value toList() {
+	public MuaValue toList() {
 		return this;
 	}
 
@@ -70,7 +70,7 @@ public class List implements Value {
 	}
 
 	@Override
-	public ArrayList<Value> getList() {
+	public ArrayList<MuaValue> getList() {
 		return this.mList;
 	}
 
@@ -79,7 +79,7 @@ public class List implements Value {
 		this.toWord().print();
 	}
 
-	public void add(Value v) {
+	public void add(MuaValue v) {
 		this.mList.add(v);
 	}
 }

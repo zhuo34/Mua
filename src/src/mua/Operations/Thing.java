@@ -1,12 +1,10 @@
 package src.mua.Operations;
 
 import src.mua.Interpreter;
-import src.mua.Main;
 import src.mua.MuaStack;
 import src.mua.NameSpace;
-import src.mua.Value.List;
-import src.mua.Value.None;
-import src.mua.Value.Value;
+import src.mua.MuaValue.MuaNone;
+import src.mua.MuaValue.MuaValue;
 
 import java.util.ArrayList;
 
@@ -17,9 +15,9 @@ public class Thing implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, MuaStack caller) {
+	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
 		String name = args.get(0).getWord();
-		Value ret = new None();
+		MuaValue ret = new MuaNone();
 		NameSpace localNameSpace = caller.getNameSpace();
 		if (localNameSpace.has(name)) {
 			ret = localNameSpace.get(name);

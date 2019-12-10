@@ -1,10 +1,10 @@
 package src.mua.Operations;
 
 import src.mua.MuaStack;
-import src.mua.Value.Bool;
-import src.mua.Value.List;
-import src.mua.Value.Value;
-import src.mua.Value.Word;
+import src.mua.MuaValue.MuaBool;
+import src.mua.MuaValue.MuaList;
+import src.mua.MuaValue.MuaValue;
+import src.mua.MuaValue.MuaWord;
 
 import java.util.ArrayList;
 
@@ -15,14 +15,14 @@ public class Isempty implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, MuaStack caller) {
-		Value v = args.get(0);
+	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
+		MuaValue v = args.get(0);
 		boolean res = false;
-		if (v instanceof Word) {
+		if (v instanceof MuaWord) {
 			res = v.getWord().isEmpty();
-		} else if (v instanceof List) {
+		} else if (v instanceof MuaList) {
 			res = v.getList().isEmpty();
 		}
-		return new Bool(res);
+		return new MuaBool(res);
 	}
 }

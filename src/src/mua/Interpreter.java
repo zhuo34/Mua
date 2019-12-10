@@ -1,7 +1,6 @@
 package src.mua;
 
-import src.mua.Value.None;
-import src.mua.Value.ValueFactory;
+import src.mua.MuaValue.MuaValueFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -9,8 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class Interpreter {
@@ -62,11 +59,11 @@ public class Interpreter {
 			if (finishStatement()) {
 				stack.processStatement(items);
 			}
-		};
+		}
 	}
 
 	private static boolean finishStatement() {
-		return !ValueFactory.isParsingList();
+		return !MuaValueFactory.isParsingList();
 	}
 
 }

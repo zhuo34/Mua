@@ -1,12 +1,12 @@
-package src.mua.Value;
+package src.mua.MuaValue;
 
 import java.util.ArrayList;
 
-public class Word implements Value {
+public class MuaWord implements MuaValue {
 
 	private String mWord = "";
 
-	public Word(String word) {
+	public MuaWord(String word) {
 		this.mWord = word;
 	}
 
@@ -16,31 +16,31 @@ public class Word implements Value {
 	}
 
 	@Override
-	public Value toNumber() {
-		Value ret = new None();
-		if (ValueFactory.literalIsNumber(this.getWord())) {
-			ret = new Number(Double.parseDouble(this.getWord()));
+	public MuaValue toNumber() {
+		MuaValue ret = new MuaNone();
+		if (MuaValueFactory.literalIsNumber(this.getWord())) {
+			ret = new MuaNumber(Double.parseDouble(this.getWord()));
 		}
 		return ret;
 	}
 
 	@Override
-	public Value toBool() {
-		Value ret = new None();
+	public MuaValue toBool() {
+		MuaValue ret = new MuaNone();
 		if ((this.getWord().equals("true") || this.getWord().equals("false"))) {
-			ret = new Bool(Boolean.parseBoolean(this.getWord()));
+			ret = new MuaBool(Boolean.parseBoolean(this.getWord()));
 		}
 		return ret;
 	}
 
 	@Override
-	public Value toWord() {
+	public MuaValue toWord() {
 		return this;
 	}
 
 	@Override
-	public Value toList() {
-		return new None();
+	public MuaValue toList() {
+		return new MuaNone();
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class Word implements Value {
 	}
 
 	@Override
-	public ArrayList<Value> getList() {
+	public ArrayList<MuaValue> getList() {
 		return this.toList().getList();
 	}
 

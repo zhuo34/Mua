@@ -1,12 +1,12 @@
-package src.mua.Value;
+package src.mua.MuaValue;
 
 import java.util.ArrayList;
 
-public class Bool implements Value {
+public class MuaBool implements MuaValue {
 
 	private boolean mBool = false;
 
-	public Bool(boolean bool) {
+	public MuaBool(boolean bool) {
 		this.mBool = bool;
 	}
 
@@ -16,23 +16,23 @@ public class Bool implements Value {
 	}
 
 	@Override
-	public Value toNumber() {
-		return new Number(this.mBool ? 1.0 : 0.0);
+	public MuaValue toNumber() {
+		return new MuaNumber(this.mBool ? 1.0 : 0.0);
 	}
 
 	@Override
-	public Value toBool() {
+	public MuaValue toBool() {
 		return this;
 	}
 
 	@Override
-	public Value toWord() {
-		return new Word(String.valueOf(this.getBool()));
+	public MuaValue toWord() {
+		return new MuaWord(String.valueOf(this.getBool()));
 	}
 
 	@Override
-	public Value toList() {
-		return new None();
+	public MuaValue toList() {
+		return new MuaNone();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class Bool implements Value {
 	}
 
 	@Override
-	public ArrayList<Value> getList() {
+	public ArrayList<MuaValue> getList() {
 		return this.toList().getList();
 	}
 

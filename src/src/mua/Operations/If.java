@@ -1,8 +1,7 @@
 package src.mua.Operations;
 
 import src.mua.*;
-import src.mua.Value.None;
-import src.mua.Value.Value;
+import src.mua.MuaValue.MuaValue;
 
 import java.util.ArrayList;
 
@@ -13,11 +12,11 @@ public class If implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, MuaStack caller) {
+	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
 		boolean cond = args.get(0).toBool().getBool();
-		Value list1 = args.get(1);
-		Value list2 = args.get(2);
-		Value list;
+		MuaValue list1 = args.get(1);
+		MuaValue list2 = args.get(2);
+		MuaValue list;
 		if (cond) {
 			list = list1;
 		} else {
@@ -27,6 +26,6 @@ public class If implements Operation {
 		MuaStack muaStack = new MuaStack(caller.getNameSpace());
 		Interpreter.parseLine(body, muaStack);
 
-		return new None();
+		return muaStack.getStatementValue();
 	}
 }

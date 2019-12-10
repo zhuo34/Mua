@@ -1,11 +1,9 @@
 package src.mua.Operations;
 
-import src.mua.Interpreter;
-import src.mua.MuaItem;
 import src.mua.MuaStack;
-import src.mua.Value.List;
-import src.mua.Value.Value;
-import src.mua.Value.Word;
+import src.mua.MuaValue.MuaList;
+import src.mua.MuaValue.MuaValue;
+import src.mua.MuaValue.MuaWord;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,15 +15,15 @@ public class Readlist implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, MuaStack caller) {
-		List ret = new List();
+	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
+		MuaList ret = new MuaList();
 		boolean flag = true;
 		if (caller.scanner.hasNextLine()) {
 			String line = caller.scanner.nextLine();
 			Scanner scanner = new Scanner(line);
 			while (scanner.hasNext()) {
 				String str = scanner.next();
-				ret.add(new Word(str));
+				ret.add(new MuaWord(str));
 			};
 		}
 		return ret;

@@ -1,8 +1,8 @@
 package src.mua.Operations;
 
 import src.mua.MuaStack;
-import src.mua.Value.None;
-import src.mua.Value.Value;
+import src.mua.MuaValue.MuaNone;
+import src.mua.MuaValue.MuaValue;
 
 import java.util.ArrayList;
 
@@ -13,9 +13,9 @@ public class Print implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, MuaStack caller) {
-		Value ret = new None();
-		Value arg = args.get(0);
+	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
+		MuaValue ret = new MuaNone();
+		MuaValue arg = args.get(0);
 		arg.print();
 		System.out.println("");
 		return ret;

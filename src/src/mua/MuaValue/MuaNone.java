@@ -1,30 +1,37 @@
-package src.mua.Value;
+package src.mua.MuaValue;
 
 import java.util.ArrayList;
 
-public class None implements Value {
+public class MuaNone implements MuaValue {
+
+	public enum NoneInfo{
+		None, Stop
+	}
+
+	public NoneInfo info = NoneInfo.None;
+
 	@Override
 	public boolean canBeName() {
 		return false;
 	}
 
 	@Override
-	public Value toNumber() {
+	public MuaValue toNumber() {
 		return this;
 	}
 
 	@Override
-	public Value toBool() {
+	public MuaValue toBool() {
 		return this;
 	}
 
 	@Override
-	public Value toWord() {
+	public MuaValue toWord() {
 		return this;
 	}
 
 	@Override
-	public Value toList() {
+	public MuaValue toList() {
 		return this;
 	}
 
@@ -44,7 +51,7 @@ public class None implements Value {
 	}
 
 	@Override
-	public ArrayList<Value> getList() {
+	public ArrayList<MuaValue> getList() {
 		return null;
 	}
 
@@ -52,4 +59,5 @@ public class None implements Value {
 	public void print() {
 		
 	}
+
 }

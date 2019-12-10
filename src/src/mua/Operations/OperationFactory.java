@@ -1,7 +1,7 @@
 package src.mua.Operations;
 
-import src.mua.Value.List;
-import src.mua.Value.Value;
+import src.mua.MuaValue.MuaList;
+import src.mua.MuaValue.MuaValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,9 +47,9 @@ public class OperationFactory {
 		return mOperationMap.containsKey(str);
 	}
 
-	public static void addFunction(String name, List argList, List funcBody) {
+	public static void addFunction(String name, MuaList argMuaList, MuaList funcBody) {
 		ArrayList<String> argListStr = new ArrayList<>();
-		for (Value v :argList.getList()) {
+		for (MuaValue v : argMuaList.getList()) {
 			argListStr.add(v.getWord());
 		}
 		OperationFactory.addFunction(name, argListStr, funcBody.getWord());

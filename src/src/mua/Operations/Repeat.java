@@ -1,12 +1,9 @@
 package src.mua.Operations;
 
 import src.mua.*;
-import src.mua.Value.None;
-import src.mua.Value.Value;
-import src.mua.Value.List;
+import src.mua.MuaValue.MuaValue;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Repeat implements Operation {
 	@Override
@@ -15,15 +12,18 @@ public class Repeat implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, MuaStack caller) {
+	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
 		int number = (int)args.get(0).getNumber();
-		Value list = args.get(1);
+		MuaValue list = args.get(1);
 
+		String body = list.getWord();
+		StringBuilder sb = new StringBuilder();
 		MuaStack muaStack = new MuaStack(caller.getNameSpace());
 		while (number-- > 0) {
-			Interpreter.parseLine(list.getWord(), muaStack);
+			sb.append(' ').append(body);
 		}
 
-		return new None();
+		Interpreter.parseLine(sb.toString(), muaStack);
+		return muaStack.getStatementValue();
 	}
 }

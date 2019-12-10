@@ -1,17 +1,18 @@
 package src.mua;
 
-import src.mua.Value.Value;
+import src.mua.MuaValue.MuaNone;
+import src.mua.MuaValue.MuaValue;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class NameSpace {
 
-	private HashMap<String, Value> mNameMap = new HashMap<String, Value>();
+	private HashMap<String, MuaValue> mNameMap = new HashMap<String, MuaValue>();
+	public MuaValue output = new MuaNone();
 
 	public NameSpace() {}
 
-	public void make(String name, Value data) {
+	public void make(String name, MuaValue data) {
 		mNameMap.put(name, data);
 	}
 
@@ -19,7 +20,7 @@ public class NameSpace {
 		mNameMap.remove(name);
 	}
 
-	public Value get(String name) {
+	public MuaValue get(String name) {
 		return mNameMap.get(name);
 	}
 
@@ -32,8 +33,9 @@ public class NameSpace {
 	}
 
 	public void exportTo(NameSpace ns) {
-		for (HashMap.Entry<String, Value> entry: mNameMap.entrySet()){
+		for (HashMap.Entry<String, MuaValue> entry: mNameMap.entrySet()){
 			ns.make(entry.getKey(), entry.getValue());
 		}
 	}
+
 }

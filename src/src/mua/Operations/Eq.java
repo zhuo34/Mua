@@ -1,8 +1,8 @@
 package src.mua.Operations;
 
 import src.mua.MuaStack;
-import src.mua.Value.Value;
-import src.mua.Value.ValueFactory;
+import src.mua.MuaValue.MuaValue;
+import src.mua.MuaValue.MuaValueFactory;
 
 import java.util.ArrayList;
 
@@ -13,8 +13,8 @@ public class Eq implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, MuaStack caller) {
-		Value ret = ValueFactory.compare(args.get(0), args.get(1), '=');
+	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
+		MuaValue ret = MuaValueFactory.compare(args.get(0), args.get(1), '=');
 		return ret;
 	}
 }

@@ -1,9 +1,8 @@
 package src.mua.Operations;
 
 import src.mua.*;
-import src.mua.Value.Value;
+import src.mua.MuaValue.MuaValue;
 
-import javax.naming.Name;
 import java.util.ArrayList;
 
 public class Function implements Operation {
@@ -12,7 +11,7 @@ public class Function implements Operation {
 	private ArrayList<String> mArgList = new ArrayList<>();
 	private String mFuncBody = "";
 	private NameSpace mLocalNameSpace = new NameSpace();
-	private MuaStack mLocalStack = new MuaStack(mLocalNameSpace);
+	private MuaStack mLocalStack = new FunctionStack(mLocalNameSpace);
 
 	public Function(String name, ArrayList<String> argList, String funcBody) {
 		mName = name;
@@ -26,13 +25,13 @@ public class Function implements Operation {
 	}
 
 	@Override
-	public Value execute(ArrayList<Value> args, MuaStack caller) {
+	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
 		this.bind(args);
 		Interpreter.parseLine(mFuncBody, mLocalStack);
-		return mLocalStack.getFuncOutput();
+		return mLocalStack.getStatementValue();
 	}
 
-	private void bind(ArrayList<Value> args) {
+	private void bind(ArrayList<MuaValue> args) {
 		mLocalNameSpace.clear();
 		for (int i = 0; i < argNumber(); i++) {
 			mLocalNameSpace.make(mArgList.get(i), args.get(i));
