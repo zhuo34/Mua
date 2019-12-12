@@ -1,5 +1,7 @@
 package src.mua.MuaValue;
 
+import src.mua.Exception.MuaException;
+
 import java.util.ArrayList;
 
 public class MuaNumber implements MuaValue {
@@ -10,53 +12,40 @@ public class MuaNumber implements MuaValue {
 		this.mNumber = number;
 	}
 
-	@Override
-	public boolean canBeName() {
-		return false;
-	}
-
-	@Override
-	public MuaValue toNumber() {
-		return this;
-	}
-
-	@Override
-	public MuaValue toBool() {
+	public MuaBool toBool() {
 		return new MuaBool(this.mNumber != 0);
 	}
 
-	@Override
-	public MuaValue toWord() {
+	public MuaWord toWord() {
 		return new MuaWord(String.valueOf(this.getNumber()));
 	}
 
-	@Override
-	public MuaValue toList() {
-		return new MuaNone();
-	}
-
-	@Override
 	public double getNumber() {
 		return this.mNumber;
 	}
 
 	@Override
-	public boolean getBool() {
-		return this.toBool().getBool();
+	public String value() {
+		return String.valueOf(this.mNumber);
 	}
 
-	@Override
-	public String getWord() {
-		return this.toWord().getWord();
+	public static MuaNumber convertFrom(MuaValue v) {
+		if (v instanceof MuaWord) {
+			return convertFrom((MuaWord) v);
+		} else if (v instanceof MuaNumber) {
+			return (MuaNumber) v;
+		} else if (v instanceof MuaBool) {
+			return convertFrom((MuaBool) v);
+		} else {
+			throw new MuaException("convert to number.");
+		}
 	}
 
-	@Override
-	public ArrayList<MuaValue> getList() {
-		return this.toList().getList();
+	public static MuaNumber convertFrom(MuaWord word) {
+		return word.toNumber();
 	}
 
-	@Override
-	public void print() {
-		System.out.print(this.getNumber());
+	public static MuaNumber convertFrom(MuaBool bool) {
+		return bool.toNumber();
 	}
 }

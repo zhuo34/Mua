@@ -1,70 +1,93 @@
 package src.mua.MuaValue;
 
+import src.mua.Exception.MuaException;
+
 import java.util.ArrayList;
 
 public class MuaWord implements MuaValue {
 
 	private String mWord = "";
 
+	public MuaWord(char c) {
+		this.mWord = String.valueOf(c);
+	}
+
 	public MuaWord(String word) {
 		this.mWord = word;
 	}
 
-	@Override
 	public boolean canBeName() {
 		return this.mWord.matches("^[a-zA-z][a-z_A-z0-9]*$");
 	}
 
-	@Override
-	public MuaValue toNumber() {
-		MuaValue ret = new MuaNone();
-		if (MuaValueFactory.literalIsNumber(this.getWord())) {
-			ret = new MuaNumber(Double.parseDouble(this.getWord()));
+	public MuaNumber toNumber() {
+		if (MuaValueFactory.literalIsNumber(this.mWord)) {
+			return new MuaNumber(Double.parseDouble(this.mWord));
+		} else {
+			throw new MuaException("convert to number.");
 		}
-		return ret;
 	}
 
-	@Override
-	public MuaValue toBool() {
-		MuaValue ret = new MuaNone();
-		if ((this.getWord().equals("true") || this.getWord().equals("false"))) {
-			ret = new MuaBool(Boolean.parseBoolean(this.getWord()));
+	public MuaBool toBool() {
+		if ((this.mWord.equals("true") || this.mWord.equals("false"))) {
+			return new MuaBool(Boolean.parseBoolean(this.mWord));
+		} else {
+			throw new MuaException("convert to bool.");
 		}
-		return ret;
 	}
 
-	@Override
-	public MuaValue toWord() {
-		return this;
-	}
-
-	@Override
-	public MuaValue toList() {
-		return new MuaNone();
-	}
-
-	@Override
-	public double getNumber() {
-		return this.toNumber().getNumber();
-	}
-
-	@Override
-	public boolean getBool() {
-		return this.toBool().getBool();
-	}
-
-	@Override
 	public String getWord() {
 		return mWord;
 	}
 
 	@Override
-	public ArrayList<MuaValue> getList() {
-		return this.toList().getList();
+	public String value() {
+		return this.mWord;
 	}
 
-	@Override
-	public void print() {
-		System.out.print(this.getWord());
+	public static MuaWord convertFrom(MuaValue v) {
+		if (v instanceof MuaWord) {
+			return (MuaWord) v;
+		} else if (v instanceof MuaNumber) {
+			return convertFrom((MuaNumber) v);
+		} else if (v instanceof MuaBool) {
+			return convertFrom((MuaBool) v);
+		} else if (v instanceof MuaList) {
+			return convertFrom((MuaList) v);
+		} else {
+			throw new MuaException("convert to word.");
+		}
+	}
+
+	public static MuaWord convertFrom(MuaNumber num) {
+		return num.toWord();
+	}
+
+	public static MuaWord convertFrom(MuaBool bool) {
+		return bool.toWord();
+	}
+
+	public static MuaWord convertFrom(MuaList list) {
+		return list.toWord();
+	}
+
+	public static MuaWord concatenate(MuaWord w0, MuaWord w1) {
+		return new MuaWord(w0.getWord() + w1.getWord());
+	}
+
+	public int length() {
+		return this.mWord.length();
+	}
+
+	public char charAt(int index) {
+		return this.mWord.charAt(index);
+	}
+
+	public String subString(int beginIndex) {
+		return this.mWord.substring(beginIndex);
+	}
+
+	public String subString(int beginIndex, int endIndex) {
+		return this.mWord.substring(beginIndex, endIndex);
 	}
 }

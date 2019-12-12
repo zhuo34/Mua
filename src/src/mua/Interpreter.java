@@ -1,5 +1,6 @@
 package src.mua;
 
+import src.mua.Exception.MuaException;
 import src.mua.MuaValue.MuaValueFactory;
 
 import java.io.IOException;
@@ -18,14 +19,20 @@ public class Interpreter {
 
 	public static Scanner ioScanner = new Scanner(System.in);
 
-	public Interpreter() {}
+	public Interpreter() {
+		preParse();
+	}
 
 	public void parse() {
-//		System.out.print("> ");
+//		System.out.value("> ");
 		while (ioScanner.hasNextLine()) {
 			String line = ioScanner.nextLine();
-			parseLine(line);
-//			System.out.print("> ");
+			try {
+				globalStack.parseLine(removeComments(line));
+			} catch (MuaException e) {
+				e.print();
+			}
+//			System.out.value("> ");
 		};
 	}
 
@@ -34,7 +41,11 @@ public class Interpreter {
 		try (Scanner scanner =  new Scanner(filePath, ENCODING.name())) {
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
-				parseLine(line);
+				try {
+					globalStack.parseLine(removeComments(line));
+				} catch (MuaException e) {
+					e.print();
+				}
 			};
 		} catch (IOException e) {
 			System.out.println("Open '" + filename + "' failed.");
@@ -42,28 +53,21 @@ public class Interpreter {
 		parse();
 	}
 
-	private void parseLine(String line) {
-		parseLine(line, globalStack);
-	}
-
-	public static void parseLine(String line, MuaStack stack) {
-		// remove comments
+	private String removeComments(String line) {
 		int commentIndex = line.indexOf("//");
 		if (commentIndex != -1) {
 			line = line.substring(0, commentIndex);
 		}
-		stack.scanner = new Scanner(line);
-		while (stack.scanner.hasNext()) {
-			String str = stack.scanner.next();
-			ArrayList<MuaItem> items = MuaItemFactory.parseLiteral(str);
-			if (finishStatement()) {
-				stack.processStatement(items);
-			}
-		}
+		return line;
 	}
 
-	private static boolean finishStatement() {
-		return !MuaValueFactory.isParsingList();
+	private void preParse() {
+		String line =
+				"make \"pi 3.14159\n" +
+				"make \"run [\n" +
+				"\t[list]\n" +
+				"\t[repeat 1 :list]\n" +
+				"]\n";
+		globalStack.parseLine(line);
 	}
-
 }
