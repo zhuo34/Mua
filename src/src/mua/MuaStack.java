@@ -1,56 +1,112 @@
 package src.mua;
 
-import src.mua.Operations.Operation;
-import src.mua.Operations.OperationFactory;
-import src.mua.Value.None;
-import src.mua.Value.Value;
+import src.mua.Exception.MuaException;
+import src.mua.MuaOperation.MuaOperation;
+import src.mua.MuaOperation.Output;
+import src.mua.MuaValue.MuaNone;
+import src.mua.MuaValue.MuaValue;
+import src.mua.MuaValue.MuaValueFactory;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class MuaStack {
 
 	private NameSpace ns;
-	private Stack<Operation> opStack;
-	private Stack<Integer> opDataStack;
-	private Stack<Value> dataStack;
+	private Stack<MuaOperation> opStack = new Stack<>();
+	private Stack<Integer> opDataStack = new Stack<>();
+	private Stack<MuaValue> dataStack = new Stack<>();
+
+	private boolean stop = false;
+	boolean isFunction = false;
+	public Scanner scanner;
 
 	public MuaStack(NameSpace ns) {
 		this.ns = ns;
-		opStack = new Stack<>();
-		opDataStack = new Stack<>();
-		dataStack = new Stack<>();
 	}
 
-	public Value processStatement(ArrayList<MuaItem> statement) {
-		Value ret = new None();
-		for (MuaItem it: statement) {
-			if (it instanceof Operation) {
-				opStack.push((Operation)it);
-				opDataStack.push(dataStack.size());
-			} else if (it instanceof Value) {
-				dataStack.push((Value)it);
-				this.executeUntil();
+	public NameSpace getNameSpace() {
+		return this.ns;
+	}
+
+	public MuaValue getStatementValue() {
+		MuaValue ret = new MuaNone();
+		if (this.isFunction) {
+			ret = this.getFuncOutput();
+		} else if (!dataStack.isEmpty()) {
+			ret = dataStack.peek();
+		}
+		return ret;
+	}
+
+	private MuaValue getFuncOutput() {
+		return this.ns.output;
+	}
+
+	public void parseLine(String line) {
+		this.scanner = new Scanner(line);
+		while (this.scanner.hasNext()) {
+			String str = this.scanner.next();
+			ArrayList<MuaItem> items = MuaItemFactory.parseLiteral(str);
+			if (!MuaValueFactory.isParsing()) {
+				this.processStatement(items);
+				if (this.stop) {
+					if (isGlobal()) {
+						this.stop = false;
+					}
+					break;
+				}
 			}
 		}
+	}
 
+	public void processStatement(ArrayList<MuaItem> statement) {
+		for (MuaItem it: statement) {
+			if (it instanceof MuaOperation) {
+				opStack.push((MuaOperation)it);
+				opDataStack.push(dataStack.size());
+			} else if (it instanceof MuaValue) {
+				dataStack.push((MuaValue)it);
+			} else {
+				throw new MuaException("Runtime Error: undefined.");
+			}
+			this.executeUntil();
+			if (this.stop) {
+				return;
+			}
+		}
 		this.executeUntil();
-
-		return ret;
 	}
 
 	private void executeUntil() {
 		while (!opStack.isEmpty() && opStack.peek().argNumber() <= dataStack.size() - opDataStack.peek()) {
-			Operation topOp = opStack.pop();
+			MuaOperation topOp = opStack.pop();
 			opDataStack.pop();
-			ArrayList<Value> argList = new ArrayList<>();
+			ArrayList<MuaValue> argList = new ArrayList<>();
 			for (int i = 0; i < topOp.argNumber(); i++) {
 				argList.add(0, dataStack.pop());
 			}
-			Value res = topOp.execute(argList, ns);
-			if (!(res instanceof None)) {
-				dataStack.push(res);
+
+			MuaValue res = topOp.execute(argList, this);
+			if (topOp instanceof Output) {
+				this.ns.output = res;
+				dataStack.push(new MuaNone());
+				continue;
+			}
+
+			dataStack.push(res);
+			if (res instanceof MuaNone) {
+				MuaNone muaNoneRes = (MuaNone) res;
+				if (muaNoneRes.info == MuaNone.NoneInfo.Stop) {
+					this.stop = true;
+					break;
+				}
 			}
 		}
+	}
+
+	private boolean isGlobal() {
+		return this == Interpreter.globalStack;
 	}
 }

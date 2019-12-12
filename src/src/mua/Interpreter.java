@@ -1,5 +1,8 @@
 package src.mua;
 
+import src.mua.Exception.MuaException;
+import src.mua.MuaValue.MuaValueFactory;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -11,22 +14,25 @@ import java.util.Scanner;
 public class Interpreter {
 
 	private final static Charset ENCODING = StandardCharsets.UTF_8;
-	private NameSpace globalNameSpace = new NameSpace();
-	private MuaStack globalStack = new MuaStack(globalNameSpace);
+	public static NameSpace globalNameSpace = new NameSpace();
+	public static MuaStack globalStack = new MuaStack(globalNameSpace);
 
 	public static Scanner ioScanner = new Scanner(System.in);
 
 	public Interpreter() {
-//		globalNameSpace = new NameSpace();
-//		globalStack = new MuaStack(globalNameSpace);
+		preParse();
 	}
 
 	public void parse() {
-//		System.out.print("> ");
+//		System.out.value("> ");
 		while (ioScanner.hasNextLine()) {
-			String str = ioScanner.nextLine();
-			parseLine(str);
-//			System.out.print("> ");
+			String line = ioScanner.nextLine();
+			try {
+				globalStack.parseLine(removeComments(line));
+			} catch (MuaException e) {
+				e.print();
+			}
+//			System.out.value("> ");
 		};
 	}
 
@@ -34,8 +40,12 @@ public class Interpreter {
 		Path filePath = Paths.get(filename);
 		try (Scanner scanner =  new Scanner(filePath, ENCODING.name())) {
 			while (scanner.hasNextLine()) {
-				String str = scanner.nextLine();
-				parseLine(str);
+				String line = scanner.nextLine();
+				try {
+					globalStack.parseLine(removeComments(line));
+				} catch (MuaException e) {
+					e.print();
+				}
 			};
 		} catch (IOException e) {
 			System.out.println("Open '" + filename + "' failed.");
@@ -43,25 +53,21 @@ public class Interpreter {
 		parse();
 	}
 
-	private void parseLine(String line) {
-		// remove comments
+	private String removeComments(String line) {
 		int commentIndex = line.indexOf("//");
 		if (commentIndex != -1) {
 			line = line.substring(0, commentIndex);
 		}
-
-		// convert : to thing
-		line = line.replace(" :", " thing \"");
-		ArrayList<MuaItem> ret = new ArrayList<MuaItem>();
-		Scanner scanner = new Scanner(line);
-		while (scanner.hasNext()) {
-			String str = scanner.next();
-			ret.add(MuaItem.parseLiteral(str));
-		};
-		processStatement(ret);
+		return line;
 	}
 
-	private void processStatement(ArrayList<MuaItem> statement) {
-		globalStack.processStatement(statement);
+	private void preParse() {
+		String line =
+				"make \"pi 3.14159\n" +
+				"make \"run [\n" +
+				"\t[list]\n" +
+				"\t[repeat 1 :list]\n" +
+				"]\n";
+		globalStack.parseLine(line);
 	}
 }
