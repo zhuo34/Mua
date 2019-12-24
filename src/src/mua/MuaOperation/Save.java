@@ -6,6 +6,7 @@ import src.mua.MuaValue.MuaNone;
 import src.mua.MuaValue.MuaValue;
 import src.mua.MuaValue.MuaWord;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class Save implements MuaOperation {
@@ -18,7 +19,13 @@ public class Save implements MuaOperation {
 	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
 		String path = MuaWord.convertFrom(args.get(0)).getWord();
 
-//		JSONWriter
+		try {
+			FileWriter f = new FileWriter(path);
+			f.write(caller.getNameSpace().toString());
+			f.close();
+		} catch (IOException e) {
+			System.out.println("Open file '" + path + "' failed.");
+		}
 
 		return new MuaNone();
 	}

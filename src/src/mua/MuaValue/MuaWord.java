@@ -24,7 +24,7 @@ public class MuaWord implements MuaValue {
 		if (MuaValueFactory.literalIsNumber(this.mWord)) {
 			return new MuaNumber(Double.parseDouble(this.mWord));
 		} else {
-			throw new MuaException("convert to number.");
+			throw new MuaException("'" + this.mWord + "' convert to number.");
 		}
 	}
 
@@ -55,7 +55,7 @@ public class MuaWord implements MuaValue {
 		} else if (v instanceof MuaList) {
 			return convertFrom((MuaList) v);
 		} else {
-			throw new MuaException("convert to word.");
+			throw new MuaException("'" + v.value() + "' convert to word.");
 		}
 	}
 
@@ -89,5 +89,9 @@ public class MuaWord implements MuaValue {
 
 	public String subString(int beginIndex, int endIndex) {
 		return this.mWord.substring(beginIndex, endIndex);
+	}
+
+	public boolean isEmpty() {
+		return this.mWord.isEmpty();
 	}
 }

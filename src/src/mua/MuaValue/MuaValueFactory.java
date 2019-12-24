@@ -13,12 +13,7 @@ public class MuaValueFactory {
 	public static MuaValue parseLiteral(String str) throws MuaException {
 		MuaValue ret = new MuaNone();
 		if (!isParsingList()) {
-			if (isParsingExpression()) {
-				ret = parseExpression(str);
-				if (!(ret instanceof MuaNone)) {
-					ret = ((MuaExpression) ret).getValue();
-				}
-			} else {
+			if (!isParsingExpression()) {
 				if (literalIsNumber(str)) {
 					ret = new MuaNumber(Double.parseDouble(str));
 				} else if (literalIsWord(str)) {
@@ -29,12 +24,11 @@ public class MuaValueFactory {
 					ret = parseList(str);
 				} else if (literalIsHead(str, MuaExpression.prefix)) {
 					ret = parseExpression(str);
-					if (!(ret instanceof MuaNone)) {
-						ret = ((MuaExpression) ret).getValue();
-					}
 				} else {
 					throw new MuaException("Syntax Error: undefined literal '" + str + "'.");
 				}
+			} else {
+				ret = parseExpression(str);
 			}
 		} else {
 			ret = parseList(str);
@@ -186,13 +180,10 @@ public class MuaValueFactory {
 	public static MuaBool compare(MuaValue v1, MuaValue v2, char op) {
 		double cmpRes = 0;
 		boolean flag = false;
-		if (v1 instanceof MuaNumber && v2 instanceof MuaNumber) {
-			cmpRes = MuaNumber.convertFrom(v1).getNumber() - MuaNumber.convertFrom(v2).getNumber();
-			flag = true;
-		} else if (v1 instanceof MuaWord && v2 instanceof MuaWord) {
+		if (v1 instanceof MuaWord && v2 instanceof MuaWord) {
 			cmpRes = MuaWord.convertFrom(v1).getWord().compareTo(MuaWord.convertFrom(v2).getWord());
 			flag = true;
-		} else if (!(v1 instanceof MuaBool) && !(v2 instanceof MuaBool)) {
+		} else if (!(v1 instanceof MuaList) && !(v2 instanceof MuaList)) {
 			MuaNumber operand1 = MuaNumber.convertFrom(v1);
 			MuaNumber operand2 = MuaNumber.convertFrom(v2);
 			cmpRes = operand1.getNumber() - operand2.getNumber();
@@ -207,6 +198,6 @@ public class MuaValueFactory {
 				return new MuaBool(cmpRes > 0);
 			}
 		}
-		throw new MuaException("Error: cannot compare.");
+		return new MuaBool(false);
 	}
 }
