@@ -1,9 +1,8 @@
 package src.mua;
 
-import src.mua.MuaValue.MuaNone;
-import src.mua.MuaValue.MuaNumber;
-import src.mua.MuaValue.MuaValue;
+import src.mua.MuaValue.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -47,4 +46,27 @@ public class NameSpace {
 		return mNameMap.keySet();
 	}
 
+	public void bind(ArrayList<String> names, ArrayList<MuaValue> args) {
+		this.clear();
+		for (int i = 0; i < names.size(); i++) {
+			this.make(names.get(i), args.get(i));
+		}
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (HashMap.Entry<String, MuaValue> entry: mNameMap.entrySet()){
+			sb.append("make \"").append(entry.getKey()).append(" ");
+			MuaValue v = entry.getValue();
+			if (v instanceof MuaWord) {
+				sb.append("\"").append(v.value());
+			} else if (v instanceof MuaList) {
+				sb.append(MuaList.prefix).append(v.value()).append( MuaList.postfix);
+			} else {
+				sb.append(v.value());
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
 }

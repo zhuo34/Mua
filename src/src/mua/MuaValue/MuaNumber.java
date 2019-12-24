@@ -36,8 +36,10 @@ public class MuaNumber implements MuaValue {
 			return (MuaNumber) v;
 		} else if (v instanceof MuaBool) {
 			return convertFrom((MuaBool) v);
+		} else if (v instanceof MuaExpression) {
+			return convertFrom((MuaExpression) v);
 		} else {
-			throw new MuaException("convert to number.");
+			throw new MuaException(v.value() + "convert to number.");
 		}
 	}
 
@@ -47,5 +49,14 @@ public class MuaNumber implements MuaValue {
 
 	public static MuaNumber convertFrom(MuaBool bool) {
 		return bool.toNumber();
+	}
+
+	public static MuaNumber convertFrom(MuaExpression exp) {
+		return exp.toNumber();
+	}
+
+	public MuaNumber opposite() {
+		this.mNumber = -this.mNumber;
+		return this;
 	}
 }

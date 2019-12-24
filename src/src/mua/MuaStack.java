@@ -3,6 +3,7 @@ package src.mua;
 import src.mua.Exception.MuaException;
 import src.mua.MuaOperation.MuaOperation;
 import src.mua.MuaOperation.Output;
+import src.mua.MuaValue.MuaExpression;
 import src.mua.MuaValue.MuaNone;
 import src.mua.MuaValue.MuaValue;
 import src.mua.MuaValue.MuaValueFactory;
@@ -52,7 +53,7 @@ public class MuaStack {
 			if (!MuaValueFactory.isParsing()) {
 				this.processStatement(items);
 				if (this.stop) {
-					if (isGlobal()) {
+					if (this.isGlobal()) {
 						this.stop = false;
 					}
 					break;
@@ -67,7 +68,11 @@ public class MuaStack {
 				opStack.push((MuaOperation)it);
 				opDataStack.push(dataStack.size());
 			} else if (it instanceof MuaValue) {
-				dataStack.push((MuaValue)it);
+				if (it instanceof MuaExpression) {
+					((MuaExpression) it).setNamespace(this.ns);
+					it = ((MuaExpression) it).getValue();
+				}
+				dataStack.push((MuaValue) it);
 			} else {
 				throw new MuaException("Runtime Error: undefined.");
 			}

@@ -3,6 +3,7 @@ package src.mua.MuaOperation;
 import src.mua.Exception.MuaException;
 import src.mua.MuaStack;
 import src.mua.MuaValue.MuaList;
+import src.mua.MuaValue.MuaNone;
 import src.mua.MuaValue.MuaValue;
 import src.mua.MuaValue.MuaWord;
 
@@ -16,12 +17,23 @@ public class First implements MuaOperation {
 
 	@Override
 	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
+		MuaValue ret = new MuaNone();
 		MuaValue v = args.get(0);
-		if (v instanceof MuaWord) {
-			return new MuaWord(MuaWord.convertFrom(v).charAt(0));
-		} else if (v instanceof MuaList) {
-			return MuaList.convertFrom(v).get(0);
+		if (v instanceof MuaList) {
+			MuaList list = MuaList.convertFrom(v);
+			if (list.isEmpty()) {
+				ret = new MuaList();
+			} else {
+				ret = list.get(0);
+			}
+		} else {
+			MuaWord word = MuaWord.convertFrom(v);
+			if (word.isEmpty()) {
+				ret = new MuaWord("");
+			} else {
+				ret = new MuaWord(word.charAt(0));
+			}
 		}
-		throw new MuaException("Runtime Error: '" + v.value() + "' is not a Word or List.");
+		return ret;
 	}
 }

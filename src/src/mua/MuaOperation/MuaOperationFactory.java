@@ -53,6 +53,7 @@ public class MuaOperationFactory {
 		put("load", new Load());
 		put("erall", new Erall());
 		put("poall", new Poall());
+		put("list", new List());
 	}};
 
 	public static MuaOperation getOperation(String str) {

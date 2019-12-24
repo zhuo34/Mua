@@ -6,6 +6,9 @@ import src.mua.MuaValue.MuaNone;
 import src.mua.MuaValue.MuaValue;
 import src.mua.MuaValue.MuaWord;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Load implements MuaOperation {
@@ -17,8 +20,23 @@ public class Load implements MuaOperation {
 	@Override
 	public MuaValue execute(ArrayList<MuaValue> args, MuaStack caller) {
 		String path = MuaWord.convertFrom(args.get(0)).getWord();
+		StringBuilder sb = new StringBuilder();
+		try {
+			FileReader f = new FileReader(path);
+			BufferedReader br = new BufferedReader(f);
+			String s = "";
+			while ((s = br.readLine()) != null) {
+				sb.append(s).append("\n");
+			}
+//			System.out.println(sb.toString());
+			f.close();
 
-//		JSONWriter
+		} catch (IOException e) {
+			System.out.println("Open file '" + path + "' failed.");
+		}
+
+		MuaStack stack = new MuaStack(caller.getNameSpace());
+		stack.parseLine(sb.toString());
 
 		return new MuaNone();
 	}

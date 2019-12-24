@@ -21,7 +21,7 @@ public class Isempty implements MuaOperation {
 		if (v instanceof MuaWord) {
 			res = MuaWord.convertFrom(v).getWord().isEmpty();
 		} else if (v instanceof MuaList) {
-			res = MuaList.convertFrom(v).getList().isEmpty();
+			res = MuaList.convertFrom(v).isEmpty();
 		}
 		return new MuaBool(res);
 	}

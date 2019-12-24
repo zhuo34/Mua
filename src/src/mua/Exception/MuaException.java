@@ -6,7 +6,6 @@ public class MuaException extends RuntimeException {
 
 	public MuaException(String message) {
 		this.message = message;
-//		this.prefix = "";,
 	}
 
 	public String what() {
@@ -14,6 +13,6 @@ public class MuaException extends RuntimeException {
 	}
 
 	public void print() {
-		System.out.println(what());
+		System.out.println(this.what());
 	}
 }

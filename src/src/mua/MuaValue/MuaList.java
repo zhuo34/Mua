@@ -9,7 +9,7 @@ public class MuaList implements MuaValue {
 	public static final char prefix = '[';
 	public static final char postfix = ']';
 
-	ArrayList<MuaValue> mList = new ArrayList<>();
+	private ArrayList<MuaValue> mList = new ArrayList<>();
 
 	public MuaList() {
 	}
@@ -22,11 +22,12 @@ public class MuaList implements MuaValue {
 		this.mList = list;
 	}
 
-	public MuaWord toWord() {
-		return new MuaWord(listToString());
+	@Override
+	public String value() {
+		return this.contentToString();
 	}
 
-	public String contentToString () {
+	public String contentToString() {
 		StringBuilder sb = new StringBuilder();
 		if (this.mList.isEmpty()) {
 			sb.append(" ");
@@ -39,15 +40,28 @@ public class MuaList implements MuaValue {
 		return sb.toString();
 	}
 
-	public String listToString () {
-		return prefix + contentToString() + postfix;
+	protected String listToString(String prefix, String postfix) {
+		return prefix + this.contentToString() + postfix;
+	}
+
+	public String listToString() {
+		return this.listToString(String.valueOf(prefix), String.valueOf(postfix));
+	}
+
+	public void add(MuaValue v) {
+		this.mList.add(v);
+	}
+
+	public MuaWord toWord() {
+		return new MuaWord(this.listToString());
 	}
 
 	public ArrayList<MuaValue> getList() {
+		ArrayList<MuaValue> ret = new ArrayList<>();
 		return this.mList;
 	}
 
-	public static MuaList convertFrom(MuaValue v) throws MuaException {
+	public static MuaList convertFrom(MuaValue v) {
 		if (v instanceof MuaList) {
 			return (MuaList) v;
 		} else {
@@ -55,28 +69,23 @@ public class MuaList implements MuaValue {
 		}
 	}
 
-	@Override
-	public String value() {
-		return listToString();
-	}
-
-	public void add(MuaValue v) throws MuaException {
-		this.mList.add(v);
-	}
-
-	public int size(){
+	public int size() {
 		return this.mList.size();
 	}
 
-	public MuaValue get(int index){
+	public boolean isEmpty() {
+		return this.mList.isEmpty();
+	}
+
+	public MuaValue get(int index) {
 		return this.mList.get(index);
 	}
 
-	public ArrayList<MuaValue> subList(int fromIndex){
+	public ArrayList<MuaValue> subList(int fromIndex) {
 		return new ArrayList<>(this.mList.subList(fromIndex, this.size()));
 	}
 
-	public ArrayList<MuaValue> subList(int fromIndex, int toIndex){
+	public ArrayList<MuaValue> subList(int fromIndex, int toIndex) {
 		return new ArrayList<>(this.mList.subList(fromIndex, toIndex));
 	}
 

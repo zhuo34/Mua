@@ -21,9 +21,9 @@ public class Make implements MuaOperation {
 		MuaValue v = args.get(1);
 		if (((MuaWord )name).canBeName()) {
 			MuaOperationFactory.eraseFunction(name.getWord());
-			if ((v instanceof MuaList) && MuaList.convertFrom(v).getList().size() == 2) {
-				MuaValue argList = MuaList.convertFrom(v).getList().get(0);
-				MuaValue funcBody = MuaList.convertFrom(v).getList().get(1);
+			if ((v instanceof MuaList) && MuaList.convertFrom(v).size() == 2) {
+				MuaValue argList = MuaList.convertFrom(v).get(0);
+				MuaValue funcBody = MuaList.convertFrom(v).get(1);
 				if ((argList instanceof MuaList) && (funcBody instanceof MuaList)) {
 					MuaOperationFactory.addFunction(name.getWord(), (MuaList)argList, (MuaList)funcBody);
 				}
